@@ -1,15 +1,20 @@
 package com.robotdreams.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class Course {
@@ -22,9 +27,11 @@ public class Course {
     private String code;
     private int creditScore;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "courseList")
-    private List<Student> studentList = new ArrayList<>();
+    private Set<Student> studentList = new HashSet<>(); // converted List to Set
 
+    @JsonManagedReference
     @ManyToOne
     private Instructor courseInstructor;
 
