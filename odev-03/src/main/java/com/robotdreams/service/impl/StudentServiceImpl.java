@@ -1,14 +1,18 @@
 package com.robotdreams.service.impl;
 
 import com.robotdreams.exception.ErrorDetails;
+import com.robotdreams.mapper.StudentDTOStudentEntityMapper;
+import com.robotdreams.mapper.StudentEntityStudentDTOMapper;
 import com.robotdreams.models.Student;
+import com.robotdreams.models.dto.StudentDTO;
 import com.robotdreams.repository.StudentRepository;
 import com.robotdreams.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,28 +22,44 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
 
+    private final StudentEntityStudentDTOMapper studentEntityStudentDTOMapper;
+
+    private final StudentDTOStudentEntityMapper studentDTOStudentEntityMapper;
+
     @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository, StudentEntityStudentDTOMapper studentEntityStudentDTOMapper, StudentDTOStudentEntityMapper studentDTOStudentEntityMapper) {
         this.studentRepository = studentRepository;
+        this.studentEntityStudentDTOMapper = studentEntityStudentDTOMapper;
+        this.studentDTOStudentEntityMapper = studentDTOStudentEntityMapper;
     }
 
     @Override
-    public Student findStudentById(long id) {
+    @Transactional(readOnly = true)
+    public StudentDTO findStudentById(long id) {
 
-        return studentRepository.findById(id).orElseThrow(() -> new ErrorDetails("Student id not found in DB"));
+        Student student = studentRepository.findById(id).orElseThrow(() -> new ErrorDetails("Student id not found in DB"));
+        return studentEntityStudentDTOMapper.map(student,null);
     }
 
     @Override
-    public List<Student> getAllStudent() {
-        return studentRepository.findAll();
+    @Transactional(readOnly = true) // readonly true daha performanslı okumayı sağlıyor
+    public List<StudentDTO> getAllStudent() {
+        List<Student> studentList = studentRepository.findAll();
+        List<StudentDTO> studentDTOList = new ArrayList<>();
+        studentList.stream().forEach(s -> studentDTOList.add(studentEntityStudentDTOMapper.map(s,null)));
+        return studentDTOList;
+
     }
 
     @Override
-    public Student saveStudent(Student student) {
+    @Transactional
+    public Student saveStudent(StudentDTO studentDTO) {
+        Student student = studentDTOStudentEntityMapper.map(studentDTO);
         return studentRepository.save(student);
     }
 
     @Override
+    @Transactional
     public void deleteStudent(long id) {
 
         studentRepository.deleteById(id);

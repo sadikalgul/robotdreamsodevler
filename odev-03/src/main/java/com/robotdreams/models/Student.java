@@ -17,9 +17,9 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@AllArgsConstructor
 public class Student {
 
     @Id
@@ -38,7 +38,16 @@ public class Student {
 
     //@JsonIgnore  // ignore cıurselist form web request
     @JsonManagedReference
-    @ManyToMany
+   // @ManyToMany(fetch = FetchType.EAGER)
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "student_course_list",
+            joinColumns = { @JoinColumn(name = "student_list_id") },
+            inverseJoinColumns = { @JoinColumn(name = "course_list_id") })
     private Set<Course> courseList = new HashSet<>(); // converted List to Set
 
 

@@ -1,6 +1,7 @@
 package com.robotdreams.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,10 +14,9 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
 public class Course {
 
     @Id
@@ -27,8 +27,15 @@ public class Course {
     private String code;
     private int creditScore;
 
+    //@JsonBackReference
+    //@ManyToMany(mappedBy = "courseList")
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "courseList")
     @JsonBackReference
-    @ManyToMany(mappedBy = "courseList")
     private Set<Student> studentList = new HashSet<>(); // converted List to Set
 
     @JsonManagedReference

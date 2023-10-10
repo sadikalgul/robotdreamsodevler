@@ -10,6 +10,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>odev-02</module>
+        <module>odev-03</module>
+        <module>odev-10</module>
     </modules>
 
     <properties>

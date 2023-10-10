@@ -16,8 +16,6 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
 public abstract class Instructor {
 
     @Id

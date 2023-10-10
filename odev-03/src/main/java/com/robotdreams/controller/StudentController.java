@@ -3,6 +3,7 @@ package com.robotdreams.controller;
 
 import com.robotdreams.models.Course;
 import com.robotdreams.models.Student;
+import com.robotdreams.models.dto.StudentDTO;
 import com.robotdreams.service.CourseService;
 import com.robotdreams.service.StudentService;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class StudentController {
@@ -25,24 +27,26 @@ public class StudentController {
     }
 
     @GetMapping("/student/{id}")
-    public Student getStudentById(@PathVariable Long id){
+    public StudentDTO getStudentById(@PathVariable Long id){
+        //Student student = studentService.findStudentById(id);
+        //Set<Course> courseList = student.getCourseList();
         return studentService.findStudentById(id);
 
     }
 
     @GetMapping("/students")
-    public List<Student> getAllStudents(){
+    public List<StudentDTO> getAllStudents(){
         return studentService.getAllStudent();
 
     }
 
-/*    @PostMapping(value = "/student",consumes = "application/json;charset=UTF-8")
-    public Student saveStudent(@RequestBody Student student){
+    @PostMapping(value = "/student")
+    public Student saveStudent(@RequestBody @Valid StudentDTO student){
         System.out.println("name:"+student.getName());
         return studentService.saveStudent(student);
-    }*/
+    }
 
-    @PostMapping(value = "/student")
+/*    @PostMapping(value = "/student")
     public Student saveStudent(
             @RequestParam("studentName") @Valid String name,
             @RequestParam("StudentAddress") @Valid String address,
@@ -54,14 +58,15 @@ public class StudentController {
         if(course != null)
             student.getCourseList().add(course);
         return studentService.saveStudent(student);
-    }
+    }*/
 
 
- /*   @PutMapping("/student")
-    public Student updateStudent(@RequestBody @Valid Student student){
-        return studentService.saveStudent(student);
+    @PutMapping("/student")
+    public Student updateStudent(@RequestBody @Valid StudentDTO studentDTO){
+        return studentService.saveStudent(studentDTO);
     }
-*/
+
+/*
      @PutMapping("/student")
      public Student updateStudent(
              @RequestParam("studentId") @Valid Long id,
@@ -77,6 +82,8 @@ public class StudentController {
          student.setGender(gender);
          student.setBirtDate(birth);
 
+         Set<Course> courseList = student.getCourseList();
+
          Course removeCourse = removeCourseId >0 ? courseService.findCourseById(removeCourseId):null;
          if(removeCourse != null)
              student.getCourseList().remove(removeCourse);
@@ -87,6 +94,7 @@ public class StudentController {
          return studentService.saveStudent(student);
      }
 
+*/
 
 
     @DeleteMapping("/student")

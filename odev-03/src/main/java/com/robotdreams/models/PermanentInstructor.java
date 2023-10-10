@@ -7,8 +7,6 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
 public class PermanentInstructor extends Instructor{
 
     public PermanentInstructor(String name, String phoneNumber, SalaryType salaryType) {

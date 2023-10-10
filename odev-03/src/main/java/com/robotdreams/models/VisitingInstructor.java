@@ -7,8 +7,6 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
 public class VisitingInstructor extends Instructor{
 
 
