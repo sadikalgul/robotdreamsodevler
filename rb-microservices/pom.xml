@@ -3,22 +3,23 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.robotdreams</groupId>
+        <artifactId>robotdreams-odevler</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
-    <groupId>com.robotdreams</groupId>
-    <artifactId>robotdreams-odevler</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <modules>
-        <module>odev-02</module>
-        <module>odev-03</module>
-        <module>odev-10</module>
-        <module>rb-microservices</module>
-    </modules>
+    <artifactId>rb-microservices</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <modules>
+        <module>schoolmanage-service</module>
+    </modules>
 
 </project>
