@@ -7,6 +7,7 @@ import com.robotdreams.schoolmanage.models.PermanentInstructor;
 import com.robotdreams.schoolmanage.models.SalaryType;
 import com.robotdreams.schoolmanage.models.VisitingInstructor;
 import com.robotdreams.schoolmanage.service.InstructorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,14 +15,15 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor // auto add constructor
 public class InstructorController {
 
     private final InstructorService instructorService;
 
-    @Autowired
+   /* @Autowired
     public InstructorController(InstructorService instructorService) {
         this.instructorService = instructorService;
-    }
+    }*/
 
 
     @GetMapping("/instructor/{id}")
