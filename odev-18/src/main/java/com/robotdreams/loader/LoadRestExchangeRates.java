@@ -1,8 +1,10 @@
 package com.robotdreams.loader;
 
+import com.robotdreams.model.Exchange;
 import com.robotdreams.model.dto.CurrencyModelDTO;
 import com.robotdreams.model.dto.CurrencySubModelDTO;
 import com.robotdreams.model.dto.RateDto;
+import com.robotdreams.repository.ExchangeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -20,17 +22,21 @@ import java.util.List;
 public class LoadRestExchangeRates implements ApplicationRunner {
 
     private final RestTemplate restTemplate;
+    private final ExchangeRepository exchangeRepository;
 
     @Override
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
 
-        //CurrencyModelDTO currencyModelDTOS = new CurrencyModelDTO();
         CurrencyModelDTO currencySubModelDTOS = restTemplate.getForObject("https://mocki.io/v1/1e26abb9-d48e-42b9-995d-54cddecfbae2",CurrencyModelDTO.class);
-        System.out.println("data retrieved");
-        for(CurrencySubModelDTO currencySubModelDTO : currencySubModelDTOS.getCurrencySubModelDTOList()){
-            for (RateDto rateDto : currencySubModelDTO.getRateDtoList()){
-                System.out.println(currencySubModelDTO.getSource() + rateDto.getRate() + rateDto.getTarget());
+        for(CurrencySubModelDTO currencySubModelDTO : currencySubModelDTOS.getCurrencies()){
+            for (RateDto rateDto : currencySubModelDTO.getRates()){
+                Exchange exchange = Exchange.builder()
+                        .source(currencySubModelDTO.getSource())
+                        .target(rateDto.getTarget())
+                        .rate(rateDto.getRate())
+                        .build();
+                exchangeRepository.save(exchange);
             }
         }
     }

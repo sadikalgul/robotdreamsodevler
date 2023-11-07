@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class CurrencyModelDTO {
-    private List<CurrencySubModelDTO> currencySubModelDTOList = new ArrayList<>();
+    private List<CurrencySubModelDTO> currencies = new ArrayList<>();
 }
