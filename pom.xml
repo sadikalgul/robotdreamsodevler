@@ -12,6 +12,7 @@
         <module>odev-02</module>
         <module>odev-03</module>
         <module>odev-10</module>
+        <module>odev-18</module>
         <module>rb-microservices</module>
     </modules>
 
