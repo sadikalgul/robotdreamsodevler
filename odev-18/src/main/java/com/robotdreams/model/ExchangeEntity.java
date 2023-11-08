@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Exchange {
+public class ExchangeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
