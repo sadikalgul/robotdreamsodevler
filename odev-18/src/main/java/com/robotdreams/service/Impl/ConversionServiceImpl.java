@@ -40,9 +40,12 @@ public class ConversionServiceImpl implements ConversionService {
         conversionEntity = conversionRepository.save(conversionEntity);
 
         return ConversionResponseDTO.builder()
-                .amount(calculatedAmount)
+                .amount(conversionRequestDTO.getAmount())
+                .calculatedAmount(calculatedAmount)
                 .target(conversionRequestDTO.getTarget())
+                .source(conversionRequestDTO.getSource())
                 .transactionId(conversionEntity.getTransactionId())
+                .transactionDate(conversionEntity.getTransactionDate())
                 .build();
     }
 
@@ -54,7 +57,10 @@ public class ConversionServiceImpl implements ConversionService {
 
         return ConversionResponseDTO.builder()
                 .amount(conversionEntity.getAmount())
+                .calculatedAmount(conversionEntity.getCalculatedAmount())
+                .source(conversionEntity.getExchange().getSource())
                 .transactionId(conversionEntity.getTransactionId())
+                .transactionDate(conversionEntity.getTransactionDate())
                 .target(conversionEntity.getExchange().getTarget())
                 .build();
     }
