@@ -1,5 +1,6 @@
 package com.robotdreams.service.Impl;
 
+import com.robotdreams.exception.ErrorDetails;
 import com.robotdreams.model.ConversionEntity;
 import com.robotdreams.model.ExchangeEntity;
 import com.robotdreams.model.dto.ConversionRequestDTO;
@@ -54,6 +55,8 @@ public class ConversionServiceImpl implements ConversionService {
     public ConversionResponseDTO getConversionListByTransactionId(String transactionId) {
 
         ConversionEntity conversionEntity = conversionRepository.findByTransactionId(transactionId);
+        if(conversionEntity == null)
+            throw new ErrorDetails("conversionEntity not found in DB");
 
         return ConversionResponseDTO.builder()
                 .amount(conversionEntity.getAmount())

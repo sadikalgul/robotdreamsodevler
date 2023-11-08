@@ -1,5 +1,6 @@
 package com.robotdreams.service.Impl;
 
+import com.robotdreams.exception.ErrorDetails;
 import com.robotdreams.model.ExchangeEntity;
 import com.robotdreams.model.dto.ExchangeResponseDTO;
 import com.robotdreams.repository.ExchangeRepository;
@@ -17,6 +18,8 @@ public class ExchangeServiceImpl implements ExchangeService {
     @Transactional
     public ExchangeResponseDTO findExchangeEntityBySourceAndTarget(String source, String target) {
         ExchangeEntity exchangeEntity = exchangeRepository.findExchangeEntityBySourceAndTarget(source, target);
+        if(exchangeEntity == null)
+            throw new ErrorDetails("exchangeEntity not found in DB");
 
         return ExchangeResponseDTO.builder()
                 .rate(exchangeEntity.getRate())
