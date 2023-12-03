@@ -1,11 +1,11 @@
 server:
-  port: 8080
+  port: 8082
 spring:
   application:
-    name: schoolmanage-service
+    name: notification-service
   datasource:
     password: robotdreams
-    url: jdbc:postgresql://postgres:5432/schoolmanage
+    url: jdbc:postgresql://postgres:5432/notification
     username: robotdreams
   jpa:
     hibernate:

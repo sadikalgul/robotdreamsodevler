@@ -21,6 +21,7 @@
     <modules>
         <module>schoolmanage-service</module>
         <module>clients</module>
+        <module>eureka-server</module>
         <module>notification-service</module>
         <module>rabbitMQ</module>
         <module>apigateway</module>

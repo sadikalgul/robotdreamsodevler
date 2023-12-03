@@ -32,6 +32,9 @@ services:
     container_name: zipkin
     ports:
       - "9411:9411"
+    networks:
+      - spring
+      - postgres
 
   rabbitmq:
     image: rabbitmq:3.9.11-management-alpine
@@ -39,28 +42,69 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - spring
 
-#  eureka-server:
-#    image: eureka-server:0.0.1-SNAPSHOT
-#    hostname: eureka-server
-#    ports:
-#      - "8761:8761"
-#
-#  schoolmanage:
-#    image: schoolmanage-service:0.0.1-SNAPSHOT
-#    depends_on:
-#      - postgres
-#      - eureka-server
-#    environment:
-#      - "SPRING_PROFILES_ACTIVE=docker"
-#    ports:
-#      - '8080:8080'
-#    networks:
-#      - postgres
-#    links:
-#      - eureka-server
+  eureka-server:
+    image: ytuloyal/eureka-server:latest
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+    depends_on:
+      - zipkin
+
+  apigateway:
+    image: ytuloyal/apigateway:latest
+    container_name: apigateway
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+    depends_on:
+      - zipkin
+      - eureka-server
+
+  schoolmanage-service:
+    image: ytuloyal/schoolmanage-service:latest
+    container_name: schoolmanage-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - zipkin
+      - eureka-server
+      - postgres
+      - rabbitmq
+  notification-service:
+    image: ytuloyal/notification-service:latest
+    container_name: notification-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - zipkin
+      - eureka-server
+      - postgres
+      - rabbitmq
+
 networks:
   postgres:
+    driver: bridge
+  spring:
     driver: bridge
 volumes:
   postgres:
